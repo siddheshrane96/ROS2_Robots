@@ -50,12 +50,29 @@ def generate_launch_description():
                                    '-z', '0.1'],
                         output='screen')
 
+    # Doesn't work for current version of ros_gz_bridge
+    # bridge_params = os.path.join(get_package_share_directory(package_name),'config','gz_bridge.yaml')
+    # ros_gz_bridge = Node(
+    #     package="ros_gz_bridge",
+    #     executable="parameter_bridge",
+    #     arguments=["-f", bridge_params],
+    #     output="screen"
+    # )
 
-    bridge_params = os.path.join(get_package_share_directory(package_name),'config','gz_bridge.yaml')
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=[bridge_params],
+        arguments=[
+            # GZ -> ROS:
+            "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
+            "/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan",
+            "/odom@nav_msgs/msg/Odometry[ignition.msgs.Odometry",
+            "/tf@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V",
+            "/joint_states@sensor_msgs/msg/JointState[ignition.msgs.Model",
+
+            # ROS -> GZ:
+            "/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist",
+        ],
         output="screen"
     )
 
