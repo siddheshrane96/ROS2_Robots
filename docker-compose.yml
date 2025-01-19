@@ -1,0 +1,18 @@
+services:
+  ros2_robots:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    container_name: ros2_robots
+    network_mode: host
+    privileged: true
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./src:/home/user/ros2_ws/src
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=42
+    command: bash
